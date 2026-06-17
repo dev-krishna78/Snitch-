@@ -4,6 +4,6 @@ import {register} from "../controllers/auth.controller.js"
 
 const router = Router()
 
-router.get("/register",validateRegisterUser,register)
+router.post("/register",validateRegisterUser,register)
 
 export default router 

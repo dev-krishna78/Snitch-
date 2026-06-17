@@ -1,18 +1,18 @@
 import axios from "axios"
 
-const authapiInstance = axios.create({
+const authApiInstance = axios.create({
     baseURL: "http://localhost:3000/api/auth",
     withCredentials: true
 })
 
-export async function register({email, contact, fullname , isSeller , password}){
-
-    const response = await authapiInstance.post("/register",{
+export async function register({email, contact, password, fullname, isSeller}){
+// const {email , contact , password , fullname, isSeller} = req.body;
+    const response = await authApiInstance.post("/register",{
         email,
+        contact,
         password,
         fullname,
-        isSeller,
-        contact
+        isSeller
     })
 
     return response.data 

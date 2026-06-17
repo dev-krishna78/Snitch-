@@ -1,6 +1,12 @@
 import { useState } from 'react';
+import {useAuth} from "../hooks/useAuth"
+import {useNavigate } from 'react-router'
 
 const Register = () => {
+
+  const {handleRegister} = useAuth()
+  const navigate = useNavigate()
+
   const [formData, setFormData] = useState({
     fullname: '',
     email: '',
@@ -17,9 +23,17 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    await handleRegister({
+      email: formData.email,
+      password: formData.password,
+      contact: formData.contact,
+      isSeller: formData.isSeller,
+      fullname: formData.fullname
+    })
     // Form submission handler to be implemented by business logic layer
+    navigate("/")
   };
 
   return (

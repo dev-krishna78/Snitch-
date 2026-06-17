@@ -11,5 +11,9 @@ async function handleRegister({email, contact , password , isSeller = false , fu
 
       dispatch(setUser(data.user))
 }
+
+// async function handleLogin({email , password}){
+      
+// }
 return {handleRegister}
 }
