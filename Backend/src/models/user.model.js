@@ -3,9 +3,9 @@ import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
     email: {type: String,required:true, unique: true},
-    contact: {type: String, require: true},
-    password: {type: String, require: true},
-    fullname: {type: String, require: true},
+    contact: {type: String, required: true},
+    password: {type: String, required: true},
+    fullname: {type: String, required: true},
     role: {
         type:String,
         enum: ["buyer","seller"],
@@ -23,7 +23,7 @@ userSchema.pre("save",async function (){
 
     })
 
- userSchema.method.comparePassword = async function(password){
+ userSchema.methods.comparePassword = async function(password){
     return await bcrypt.compare(password, this.password);
  }   
 

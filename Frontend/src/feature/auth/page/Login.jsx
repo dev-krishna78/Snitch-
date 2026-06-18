@@ -1,6 +1,11 @@
 import { useState } from 'react';
+import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router';
 
 const Login = () => {
+
+   const {handleLogin} = useAuth()
+   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -14,9 +19,16 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Form submission handler to be implemented by business logic layer
+    
+    await handleLogin({
+      email: formData.email,
+      password: formData.password,
+    })
+
+    navigate("/")
   };
 
   return (

@@ -7,6 +7,9 @@ const Register = () => {
   const {handleRegister} = useAuth()
   const navigate = useNavigate()
 
+
+  
+
   const [formData, setFormData] = useState({
     fullname: '',
     email: '',
@@ -32,9 +35,17 @@ const Register = () => {
       isSeller: formData.isSeller,
       fullname: formData.fullname
     })
+
+    setFormData({
+    fullname: '',
+    email: '',
+    password: '',
+    contact: '',
+    isSeller: false,
+  })
     // Form submission handler to be implemented by business logic layer
     navigate("/")
-  };
+  }
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">

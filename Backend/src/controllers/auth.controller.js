@@ -1,6 +1,7 @@
 import userModel from "../models/user.model.js";
 import jwt from "jsonwebtoken"
 import {config} from "../config/config.js"
+import bcrypt from "bcryptjs";
 
 async function sendTokenResponse(user, res ,message){
     const token = jwt.sign({
@@ -26,7 +27,6 @@ res.status(200).json({
 }
 export const register = async(req,res)=>{
     const {email , contact , password , fullname, isSeller} = req.body;
-
     try{
         const existingUser = await userModel.findOne({
             $or: [
@@ -34,14 +34,12 @@ export const register = async(req,res)=>{
                 {contact}
             ]
         })
-
         if(existingUser){
             return res.status(400).json({
                 message: "User with this email or contact already exists"
             });
 
         }
-
         const user = await userModel.create({
             email, 
             contact,
@@ -49,7 +47,6 @@ export const register = async(req,res)=>{
             fullname,
             role: isSeller ? "seller" : "buyer"
         })
-
         await sendTokenResponse(user,res, "user register sucessfully");
     }
     catch(error){
@@ -58,6 +55,47 @@ export const register = async(req,res)=>{
         message: "Server error"
       });
     }
+}
 
 
+export const login = async(req,res)=>{
+
+     try{
+        const { email, password } = req.body;
+
+    // Check if all fields are provided
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide email and password",
+      });
+    }
+
+    // Find user by email
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    // Compare entered password with hashed password
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+        await sendTokenResponse(user, res, "user login succesfully ")
+        }
+     catch(error){
+        console.log(error)
+        return res.status(500).json({
+            message : "erver error "
+        })
+     }
 }
