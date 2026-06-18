@@ -5,18 +5,18 @@ export const authSlice = createSlice({
     initialState:{
         user :null,
         loading:false,
-        error: null,
-        reducers:{
-            setLoading:(state , action)=>{
-                   state.loading = action.payload 
-            },
-            setUser :(state , action)=>{
-                state.user = action.payload
-            },
-            setError : (state , action)=>{
-                 state.error = action.payload
-            }
-    }
+        error: null
+    },
+    reducers:{
+        setLoading:(state , action)=>{
+               state.loading = action.payload;
+        },
+        setUser:(state , action)=>{
+            state.user = action.payload;
+        },
+        setError : (state , action)=>{
+             state.error = action.payload;
+        }
     }
 })
 

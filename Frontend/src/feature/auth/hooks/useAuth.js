@@ -17,10 +17,8 @@ async function handleRegister({email, contact , password , isSeller = false , fu
 
 async function handleLogin({email, password}){
       const data  = await login({email , password})
-
       dispatch(setUser(data.user))
 
-      console.log(data.user)
 }
       
 // }

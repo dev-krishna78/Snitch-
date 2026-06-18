@@ -6,10 +6,10 @@ const Login = () => {
 
    const {handleLogin} = useAuth()
    const navigate = useNavigate()
-  const [formData, setFormData] = useState({
+   const [formData, setFormData] = useState({
     email: '',
     password: '',
-  });
+   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,16 +20,17 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    // Form submission handler to be implemented by business logic layer
-    
-    await handleLogin({
-      email: formData.email,
-      password: formData.password,
-    })
-
-    navigate("/")
-  };
+        e.preventDefault();
+        try {
+            await handleLogin({
+                email: formData.email,
+                password: formData.password
+            });
+            navigate("/");
+        } catch (error) {
+            console.error("Login failed", error);
+        }
+    };
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
