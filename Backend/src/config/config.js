@@ -9,7 +9,17 @@ if(!process.env.JWT_SECRET){
     throw new Error("Jwt scret is not defiend in the enviroment variable  ")
 }
 
+if(!process.env.GOOGLE_CLIENT_ID){
+    throw new Error("GOOGLE CLIENT ID scret is not defiend in the enviroment variable  ")
+}
+
+if(!process.env.GOOGLE_CLIENT_SECRET){
+    throw new Error("GOOGLE_CLIENT_SECRET scret is not defiend in the enviroment variable  ")
+}
+
 export const config = {
    MONGOOSE_URI: process.env.MONGOOSE_URI,
-   JWT_SECRET: process.env.JWT_SECRET
+   JWT_SECRET: process.env.JWT_SECRET,
+   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET
 }

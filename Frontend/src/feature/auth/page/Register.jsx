@@ -221,6 +221,10 @@ const Register = () => {
                         </span>
                       </label>
                     </div>
+        
+                       <a href="/api/auth/google"
+                            className="text-sm underline text-[#e5e2e1] group-hover:text-[#FFD700] cursor-pointer select-none transition-colors duration-300"
+                        >Continue with Google</a>
 
                     {/* Register Button */}
                     <button
