@@ -2,6 +2,7 @@ import { Router } from "express";
 import { validateRegisterUser , validateLoginUser} from "../validators/auth.validate.js";
 import {googleCallback,register, login} from "../controllers/auth.controller.js"
 import  passport  from "passport"
+import { config } from "dotenv";
 
 const router = Router()
 
@@ -12,8 +13,12 @@ router.post("/login",validateLoginUser, login )
 
 router.get("/google",passport.authenticate("google",{scope: ["profile","email"]}))
 
-router.get("/google/callback",passport.authenticate("google",{session: false }),
+router.get("/google/callback",
+passport.authenticate("google",{
+    session: false, 
+    failureRedirect: connfig.NODE_ENV == "development" ? "http://localhost:5173/login" : "/login"
+}),
 googleCallback,
 )
 
-export default router 
+export default router; 
