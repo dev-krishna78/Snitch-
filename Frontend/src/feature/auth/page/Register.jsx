@@ -1,28 +1,24 @@
-import { useState } from 'react';
-import {useAuth} from "../hooks/useAuth"
-import {useNavigate } from 'react-router'
+import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router";
 
 const Register = () => {
-
-  const {handleRegister} = useAuth()
-  const navigate = useNavigate()
-
-
-  
+  const { handleRegister } = useAuth();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    fullname: '',
-    email: '',
-    password: '',
-    contact: '',
+    fullname: "",
+    email: "",
+    password: "",
+    contact: "",
     isSeller: false,
   });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -33,27 +29,28 @@ const Register = () => {
       password: formData.password,
       contact: formData.contact,
       isSeller: formData.isSeller,
-      fullname: formData.fullname
-    })
+      fullname: formData.fullname,
+    });
 
     setFormData({
-    fullname: '',
-    email: '',
-    password: '',
-    contact: '',
-    isSeller: false,
-  })
+      fullname: "",
+      email: "",
+      password: "",
+      contact: "",
+      isSeller: false,
+    });
     // Form submission handler to be implemented by business logic layer
-    navigate("/")
-  }
+    navigate("/");
+  };
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
       {/* Background Image with Overlay */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=1200&fit=crop)',
+          backgroundImage:
+            "url(https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=1200&fit=crop)",
         }}
       >
         {/* Dark Gradient Overlay */}
@@ -66,7 +63,6 @@ const Register = () => {
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            
             {/* Left Side - Hero Section */}
             <div className="hidden lg:flex flex-col justify-center space-y-8">
               {/* Logo */}
@@ -83,7 +79,8 @@ const Register = () => {
                   Elevate Your Style
                 </h2>
                 <p className="text-lg text-gray-300 font-light">
-                  Create your account and discover premium fashion curated for the modern you.
+                  Create your account and discover premium fashion curated for
+                  the modern you.
                 </p>
               </div>
 
@@ -91,37 +88,69 @@ const Register = () => {
               <div className="space-y-4 pt-4">
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-500 to-amber-400 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    <svg
+                      className="w-6 h-6 text-black"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-white font-semibold">Curated Collections</p>
-                    <p className="text-gray-400 text-sm">Access exclusive fashion brands</p>
+                    <p className="text-white font-semibold">
+                      Curated Collections
+                    </p>
+                    <p className="text-gray-400 text-sm">
+                      Access exclusive fashion brands
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-500 to-amber-400 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    <svg
+                      className="w-6 h-6 text-black"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                   </div>
                   <div>
                     <p className="text-white font-semibold">Seller Dashboard</p>
-                    <p className="text-gray-400 text-sm">Grow your fashion business</p>
+                    <p className="text-gray-400 text-sm">
+                      Grow your fashion business
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-500 to-amber-400 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    <svg
+                      className="w-6 h-6 text-black"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                   </div>
                   <div>
                     <p className="text-white font-semibold">Secure Shopping</p>
-                    <p className="text-gray-400 text-sm">Safe transactions guaranteed</p>
+                    <p className="text-gray-400 text-sm">
+                      Safe transactions guaranteed
+                    </p>
                   </div>
                 </div>
               </div>
@@ -132,19 +161,30 @@ const Register = () => {
               <div className="w-full max-w-md">
                 {/* Mobile Logo */}
                 <div className="lg:hidden mb-8 text-center">
-                  <h1 className="text-5xl font-black tracking-wider text-white mb-2">SNITCH</h1>
-                  <p className="text-yellow-400 font-semibold">Elevate Your Style</p>
+                  <h1 className="text-5xl font-black tracking-wider text-white mb-2">
+                    SNITCH
+                  </h1>
+                  <p className="text-yellow-400 font-semibold">
+                    Elevate Your Style
+                  </p>
                 </div>
 
                 {/* Glassmorphism Card */}
                 <div className="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl p-8 lg:p-8">
-                  <h3 className="text-2xl font-bold text-white mb-2">Create Account</h3>
-                  <p className="text-gray-400 text-sm mb-8">Join our premium fashion community</p>
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    Create Account
+                  </h3>
+                  <p className="text-gray-400 text-sm mb-8">
+                    Join our premium fashion community
+                  </p>
 
                   <form onSubmit={handleSubmit} className="space-y-5">
                     {/* Full Name */}
                     <div>
-                      <label htmlFor="fullname" className="block text-sm font-medium text-gray-200 mb-2">
+                      <label
+                        htmlFor="fullname"
+                        className="block text-sm font-medium text-gray-200 mb-2"
+                      >
                         Full Name
                       </label>
                       <input
@@ -160,7 +200,10 @@ const Register = () => {
 
                     {/* Email */}
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-2">
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-medium text-gray-200 mb-2"
+                      >
                         Email Address
                       </label>
                       <input
@@ -176,7 +219,10 @@ const Register = () => {
 
                     {/* Password */}
                     <div>
-                      <label htmlFor="password" className="block text-sm font-medium text-gray-200 mb-2">
+                      <label
+                        htmlFor="password"
+                        className="block text-sm font-medium text-gray-200 mb-2"
+                      >
                         Password
                       </label>
                       <input
@@ -192,7 +238,10 @@ const Register = () => {
 
                     {/* Contact Number */}
                     <div>
-                      <label htmlFor="contact" className="block text-sm font-medium text-gray-200 mb-2">
+                      <label
+                        htmlFor="contact"
+                        className="block text-sm font-medium text-gray-200 mb-2"
+                      >
                         Contact Number
                       </label>
                       <input
@@ -221,11 +270,42 @@ const Register = () => {
                         </span>
                       </label>
                     </div>
-        
-                       <a href="/api/auth/google"
-                            className="text-sm underline text-[#e5e2e1] group-hover:text-[#FFD700] cursor-pointer select-none transition-colors duration-300"
-                        >Continue with Google</a>
+                    <a
+                      href="/api/auth/google"
+                      className="inline-flex items-center justify-center gap-3 w-full px-4 py-2.5 bg-white hover:bg-[#f8f8f8] active:bg-[#f0f0f0] border border-[#dadce0] hover:border-[#c4c4c4] rounded-[4px] shadow-sm hover:shadow transition-all duration-150 select-none cursor-pointer no-underline"
+                      style={{ fontFamily: "'Roboto', Arial, sans-serif" }}
+                    >
+                      {/* Google "G" Logo — official SVG */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 48 48"
+                        className="w-5 h-5 shrink-0"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fill="#EA4335"
+                          d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+                        />
+                        <path
+                          fill="#4285F4"
+                          d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+                        />
+                        <path
+                          fill="#FBBC05"
+                          d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+                        />
+                        <path
+                          fill="#34A853"
+                          d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+                        />
+                        <path fill="none" d="M0 0h48v48H0z" />
+                      </svg>
 
+                      {/* Label — Google spec: "Sign in with Google" or "Continue with Google" */}
+                      <span className="text-[14px] font-medium tracking-[0.25px] text-[#3c4043] leading-none">
+                        Continue with Google
+                      </span>
+                    </a>
                     {/* Register Button */}
                     <button
                       type="submit"
@@ -236,8 +316,11 @@ const Register = () => {
 
                     {/* Login Link */}
                     <p className="text-center text-gray-400 text-sm">
-                      Already have an account?{' '}
-                      <a href="/login" className="text-yellow-400 hover:text-yellow-300 font-semibold transition-colors">
+                      Already have an account?{" "}
+                      <a
+                        href="/login"
+                        className="text-yellow-400 hover:text-yellow-300 font-semibold transition-colors"
+                      >
                         Sign In
                       </a>
                     </p>
@@ -246,10 +329,20 @@ const Register = () => {
 
                 {/* Footer */}
                 <p className="text-center text-gray-500 text-xs mt-6">
-                  By creating an account, you agree to our{' '}
-                  <a href="#" className="text-yellow-400/70 hover:text-yellow-400 transition-colors">Terms</a>
-                  {' '}and{' '}
-                  <a href="#" className="text-yellow-400/70 hover:text-yellow-400 transition-colors">Privacy Policy</a>
+                  By creating an account, you agree to our{" "}
+                  <a
+                    href="#"
+                    className="text-yellow-400/70 hover:text-yellow-400 transition-colors"
+                  >
+                    Terms
+                  </a>{" "}
+                  and{" "}
+                  <a
+                    href="#"
+                    className="text-yellow-400/70 hover:text-yellow-400 transition-colors"
+                  >
+                    Privacy Policy
+                  </a>
                 </p>
               </div>
             </div>

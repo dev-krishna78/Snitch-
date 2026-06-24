@@ -101,7 +101,7 @@ export const login = async(req,res)=>{
 }
 
 export const googleCallback = async(req,res)=>{
-    const {id , displayName , emails , photos} = req.body;
+    const {id , displayName , emails , photos} = req.user;
 
     const email = emails[0].value;
     const profilePic = photos[0].values;
@@ -125,6 +125,6 @@ export const googleCallback = async(req,res)=>{
     })
 
     res.cookie("token", token)
-    
-    res.redirect("http://localhost:5176/")
+
+    res.redirect("http://localhost:5173/")
 }
