@@ -4,6 +4,7 @@ import {googleCallback,register, login} from "../controllers/auth.controller.js"
 import  passport  from "passport"
 import { config } from "dotenv";
 
+
 const router = Router()
 
 router.post("/register",validateRegisterUser,register)
