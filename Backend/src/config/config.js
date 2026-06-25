@@ -25,6 +25,6 @@ export const config = {
    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
    NODE_ENV: process.env.NODE_ENV || "development",
-   IMAGEKIT_PRIVATE_KEY = process.env.IMAGEKIT_PRIVATE_KEY
+   IMAGEKIT_PRIVATE_KEY : process.env.IMAGEKIT_PRIVATE_KEY
 
 }

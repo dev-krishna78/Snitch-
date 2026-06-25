@@ -1,7 +1,7 @@
 import express from 'express'
-import { authenticateSeller } from '../middleware/auth.middleware';
-import { createProductValidator } from '../validators/product.validator';
-import {createProduct } from '../validators/auth.validate.js' 
+import { authenticateSeller } from '../middleware/auth.middleware.js';
+import { createProductValidator } from '../validators/product.validator.js';
+import {createProduct } from '../controllers/product.controller.js' 
 import multer from 'multer'
 
 
