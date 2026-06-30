@@ -1,7 +1,7 @@
 import express from 'express'
 import { authenticateSeller } from '../middleware/auth.middleware.js';
 import { createProductValidator } from '../validators/product.validator.js';
-import {createProduct } from '../controllers/product.controller.js' 
+import {createProduct , getsellerProducts} from '../controllers/product.controller.js' 
 import multer from 'multer'
 
 
@@ -15,6 +15,14 @@ const upload = multer({
 
 const router = express.Router();
 
-router.post("/",authenticateSeller, createProductValidator,upload.array('images',7),createProduct)
+router.post(
+  "/",
+  authenticateSeller,
+  upload.array("images", 7),     // First parse multipart/form-data
+  createProductValidator,        // Then validate
+  createProduct
+);
+
+router.get("/seller",authenticateSeller,getsellerProducts)
 
 export default router;
