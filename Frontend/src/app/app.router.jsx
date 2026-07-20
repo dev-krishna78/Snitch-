@@ -3,12 +3,13 @@ import Register from "../feature/auth/page/Register"
 import Login from "../feature/auth/page/Login"
 import CreateProduct from "../feature/product/pages/CreateProduct"
 import Dashboard from "../feature/product/pages/Dashboard"
+import Home from "../feature/product/pages/Home"
 import Protected from "../feature/auth/component/Protected"
 
 export const routes = createBrowserRouter([
    {
       path:"/",
-      element: <h1>Hello dahboard </h1>
+      element: <Home/>
    },
    {
    path: "/register",

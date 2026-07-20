@@ -14,9 +14,15 @@ export async function createProduct(formData){
 
 
 export async function getSellerProduct(){
-    const response = await productApiInstance.get("/seller")
-
-    return response.data 
+    try {
+        const response = await productApiInstance.get("/")
+        return response.data
+    } catch (error) {
+        console.error("Failed to load products:", error)
+        throw new Error(
+            error?.response?.data?.message || "Unable to fetch products. Please try again."
+        )
+    }
 }
 
 

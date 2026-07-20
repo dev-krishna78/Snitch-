@@ -50,11 +50,43 @@ export async function getsellerProducts(req,res){
 
 
 export async function getAllData(req,res){
-    const products = await productModel.find()
+   try{
+     const products = await productModel.find()
 
-    res.status(200).json({
+    return res.status(200).json({
         message: "All products fetched successfully",
         success: true,
         products
+    })
+   }catch(error){
+    throw new Error("error is " + {error}) 
+   }
+}
+
+
+export async function getProductDetails(req, res) {
+    // support id from route params, query string, or malformed query key like ":id"
+    const id = req.params.id || req.query.id || req.query[':id']
+
+    if (!id) {
+        return res.status(400).json({
+            message: "Product id is required",
+            success: false
+        })
+    }
+
+    const product = await productModel.findById(id)
+
+    if (!product) {
+        return res.status(404).json({
+            message: "Product not found",
+            success: false
+        })
+    }
+
+    return res.status(200).json({
+        message: "Product details fetched successfully",
+        success: true,
+        product
     })
 }
