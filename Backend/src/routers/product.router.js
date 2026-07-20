@@ -5,7 +5,8 @@ import {
   createProduct,
   getsellerProducts,
   getAllData,
-  getProductDetails
+  getProductDetails,
+  addProductVariant
 } from "../controllers/product.controller.js";
 import multer from "multer";
 
@@ -40,6 +41,7 @@ router.get("/", getAllData);
  // - /api/product/detail/:id
  // - /api/product/detail?id=<id>
  // - malformed clients that send '?:id=<id>' will also work
+ router.get("/detail", getProductDetails)
  router.get("/detail/:id", getProductDetails)
 
 
@@ -49,4 +51,7 @@ router.get("/", getAllData);
  * @access Private (Seller only)
  */
 
+
+
+ router.post("/:productId/variants",authenticateSeller, upload.array("images",7),addProductVariant)
 export default router;
