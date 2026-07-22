@@ -41,7 +41,6 @@ router.get("/", getAllData);
  // - /api/product/detail/:id
  // - /api/product/detail?id=<id>
  // - malformed clients that send '?:id=<id>' will also work
- router.get("/detail", getProductDetails)
  router.get("/detail/:id", getProductDetails)
 
 
