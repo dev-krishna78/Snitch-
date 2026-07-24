@@ -1,4 +1,4 @@
-import cartModel from "../models/cart.model"
+import cartModel from "../models/cart.model.js"
 import mongoose from "mongoose"
 
 export async function getCartDetails(userId) {
