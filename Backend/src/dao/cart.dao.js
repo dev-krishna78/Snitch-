@@ -58,4 +58,4 @@ export async function getCartDetails(userId) {
     ]))[ 0 ]
 
     return cart
-}
+}                                                                      

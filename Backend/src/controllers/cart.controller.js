@@ -177,3 +177,74 @@ export const getCart = async (req, res) => {
         cart
     })
 }
+
+export async function incrementCartItem(req, res) {
+  try {
+    const { productId, variantId } = req.params;
+    const { quantity = 1 } = req.body; // default increment = 1
+
+    // 1. User authentication check
+    if (!req.user || !req.user._id) {
+      throw new Error("User not authenticated");
+    }
+
+    // 2. Find user cart
+    const cart = await cartModel.findOne({
+      user: new mongoose.Types.ObjectId(req.user._id),
+    });
+
+    if (!cart) {
+      return res.status(404).json({
+        message: "User cart not found",
+        success: false, 
+      });
+    }
+
+    // 3. Check if product+variant exists in cart
+    const cartItem = cart.items.find(
+      (item) =>
+        item.product.toString() === productId &&
+        item.variant?.toString() === variantId
+    );
+
+    if (!cartItem) {
+      return res.status(400).json({
+        message: "Product not found in cart",
+        success: false,
+      });
+    }
+
+    // 4. Stock validation
+    const stock = await stockOfVariant(productId, variantId);
+   const itemQuantityInCart = cart.items.find(item => item.product.toString() === productId && item.variant?.toString() === variantId)?.quantity || 0
+
+    if (itemQuantityInCart + 1 > stock) {
+        return res.status(400).json({
+            message: `Only ${stock} items left in stock. and you already have ${itemQuantityInCart} items in your cart`,
+            success: false
+        })
+    }
+
+    // 5. Increment quantity using $inc
+    await cartModel.findOneAndUpdate(
+      {
+        user: req.user._id,
+        "items.product": productId,
+        "items.variant": variantId,
+      },
+      { $inc: { "items.$.quantity": quantity } },
+      { new: true }
+    );
+
+    // 6. Final response
+    return res.status(200).json({
+      message: "Cart item quantity incremented successfully",
+      success: true,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
+      success: false,
+    });
+  }
+}

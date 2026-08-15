@@ -1,7 +1,7 @@
 import express from "express"
 import { authenticateUser } from "../middleware/auth.middleware.js";
-import { validateAddToCart } from "../validators/cart.validate.js";
-import { addToCart , removeFromCart,getCart } from "../controllers/cart.controller.js";
+import { validateAddToCart , validateIncrementCartItemQuantity } from "../validators/cart.validate.js";
+import { addToCart , removeFromCart,getCart ,incrementCartItem } from "../controllers/cart.controller.js";
 const router = express.Router()
 
 /**
@@ -11,7 +11,7 @@ const router = express.Router()
  * @argument ProductId id of the product
  * @argument variantId id of the variant 
  *  */ 
-router.post("/add/:productId/:variantId",authenticateUser,validateAddToCart,addToCart)
+router.post("/incrementCartProduct/:productId/:variantId",authenticateUser,validateAddToCart,addToCart)
 
 /**
  * @route /api/cart/remove /:productId/variantId
@@ -28,5 +28,12 @@ router.delete("/remove/:productId/:variantId",authenticateUser,validateAddToCart
  * @access Private
  */
 router.get('/', authenticateUser, getCart)
+
+/**
+ * @route GET /api/cart
+ * @desc Get user's cart
+ * @access Private
+ */
+router.post("/quantity/increment/:productId/:variantId", authenticateUser, validateIncrementCartItemQuantity, incrementCartItem)
 
 export default router;
