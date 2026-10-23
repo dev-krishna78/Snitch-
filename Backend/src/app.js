@@ -1,4 +1,5 @@
 import express from "express"
+import cors from "cors"
 import morgan from "morgan";
 import cookieParser from "cookie-parser"
 import authRouter from "./routers/auth.router.js"
@@ -16,6 +17,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended: true}))
 
+app.use(cors({
+    origin: "http://localhost:5173",
+    methods: [ "GET", "POST", "PUT", "DELETE" ],
+    credentials: true
+}))
 
 passport.use(new GoogleStrategy({
     clientID: config.GOOGLE_CLIENT_ID,
@@ -32,6 +38,6 @@ app.get("/",(_req,res) => {
 });
 
 app.use("/api/auth", authRouter)
-app.use("/api/product", productRouter)
+app.use("/api/products", productRouter)
 app.use("/api/cart", cartRouter)
 export default app;

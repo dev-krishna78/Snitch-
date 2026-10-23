@@ -64,7 +64,7 @@ const Cart = () => {
 
 
         const options = {
-            key: "rzp_test_ShNSkpxt3emQVJ",
+            key: "rzp_test_TneH1kSCeW4KXH",
             amount: order.amount, // Amount in paise
             currency: order.currency,
             name: "Snitch",
