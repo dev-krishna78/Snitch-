@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { validateRegisterUser , validateLoginUser} from "../validators/auth.validate.js";
+import { validateRegisterUser , validateLoginUser} from "../validators/auth.validator.js";
 import {getMe,googleCallback,register, login} from "../controllers/auth.controller.js"
 import  passport  from "passport"
 import { config } from "dotenv";

@@ -1,26 +1,23 @@
-import express from "express"
-import { authenticateUser } from "../middleware/auth.middleware.js";
-import { validateAddToCart , validateIncrementCartItemQuantity } from "../validators/cart.validate.js";
-import { addToCart , removeFromCart,getCart ,incrementCartItem , createOrderController} from "../controllers/cart.controller.js";
-const router = express.Router()
+import express from 'express';
+import { authenticateUser } from '../middleware/auth.middleware.js';
+import { validateAddToCart, validateIncrementCartItemQuantity } from '../validators/cart.validator.js';
+import { addToCart, createOrderController, getCart, incrementCartItemQuantity, verifyOrderController } from '../controllers/cart.controller.js';
+
+
+const router = express.Router();
+
 
 /**
- * @route /api/cart/add/:productId/variantId
- * @description Add item in the cart 
- * @access  Private 
- * @argument ProductId id of the product
- * @argument variantId id of the variant 
- *  */ 
-router.post("/incrementCartProduct/:productId/:variantId",authenticateUser,validateAddToCart,addToCart)
+ * @route POST /api/cart/add/:productId/:variantId
+ * @desc Add item to cart
+ * @access Private
+ * @argument productId - ID of the product to add
+ * @argument variantId - ID of the variant to add
+ * @argument quantity - Quantity of the item to add (optional, default: 1)
+ */
+router.post("/add/:productId/:variantId", authenticateUser, validateAddToCart, addToCart)
 
-/**
- * @route /api/cart/remove /:productId/variantId
- * @description remove  item in the cart 
- * @access  Private 
- * @argument ProductId id of the product
- * @argument variantId id of the variant 
- *  */
-router.delete("/remove/:productId/:variantId",authenticateUser,validateAddToCart,removeFromCart)
+
 
 /**
  * @route GET /api/cart
@@ -29,17 +26,23 @@ router.delete("/remove/:productId/:variantId",authenticateUser,validateAddToCart
  */
 router.get('/', authenticateUser, getCart)
 
+
 /**
- * @route GET /api/cart
- * @desc Get user's cart
+ * @route PATCH /api/cart/quantity/increment/:productId/:variantId
+ * @desc Increment item quantity in cart by one
  * @access Private
+ * @argument productId - ID of the product to update
+ * @argument variantId - ID of the variant to update
  */
-router.post("/quantity/increment/:productId/:variantId", authenticateUser, validateIncrementCartItemQuantity, incrementCartItem)
+router.patch("/quantity/increment/:productId/:variantId", authenticateUser, validateIncrementCartItemQuantity, incrementCartItemQuantity)
+
 
 /**
  * @route POST /api/cart/payment/create/order
  */
 router.post("/payment/create/order", authenticateUser, createOrderController)
 
+
+router.post("/payment/verify/order", authenticateUser, verifyOrderController)
 
 export default router;

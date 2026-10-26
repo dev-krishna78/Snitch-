@@ -2,165 +2,81 @@ import cartModel from "../models/cart.model.js";
 import productModel from "../models/product.model.js";
 import { stockOfVariant } from "../dao/product.dao.js";
 import mongoose from "mongoose";
+import { createOrder } from "../services/payment.service.js";
 import { getCartDetails } from "../dao/cart.dao.js";
-
-export async function addToCart(req, res) {
-  const { productId, variantId } = req.params;
-  const { quantity = 1 } = req.body;
-
-  const product = await productModel.findById({
-    _id: productId,
-    "variant._id": variantId,
-  });
-  console.log("upper product aaya hai..."+ product)
-  if (!product) {
-    return res.status(400).json({
-      message: "product or variant not found ",
-      sucess: false,
-    });
-  }
-
-  const stock = await stockOfVariant(productId, variantId);
- 
-  if (!req.user || !req.user._id) {
-  throw new Error("User not authenticated");
-}
-
-  const cart = await cartModel.findOne({ user: new mongoose.Types.ObjectId(req.user._id) }) 
-           || await cartModel.create({ user: new mongoose.Types.ObjectId(req.user._id) });
+import paymentModel from "../models/payment.model.js";
+import { validatePaymentVerification } from "razorpay/dist/utils/razorpay-utils.js";
+import { config } from "../config/config.js";
 
 
-  const isProductAlreadyInCart = cart.items.some(
-    (item) =>
-      item.product.toString() === productId &&
-      item.variant?.toString() === variantId,
-  );
 
-  if (isProductAlreadyInCart) {
-    const quantityInCart = cart.items.find(
-      (item) =>
-        item.product.toString() === productId &&
-        item.variant.toString() === variantId,
-    ).quantity;
 
-    if(quantityInCart + quantity > stock){
+export const addToCart = async (req, res) => {
+
+    const { productId, variantId } = req.params
+    const { quantity = 1 } = req.body
+
+    const product = await productModel.findOne({
+        _id: productId,
+        "variants._id": variantId
+    })
+
+    if (!product) {
         return res.status(404).json({
-            message: `only ${stock} left in stock. in your cart already ${quantityInCart} item in your cart `,
-            sucess: false
+            message: "Product or variant not found",
+            success: false
         })
     }
-    
-    await cartModel.findOneAndUpdate(
-      {user: req.user._id , "items.product": productId, "items.variant": variantId},
-      {$inc: {"items.$.quantity": quantity}},
-      {new : true }
-    )
-    
-    return res.status(200).json({
-      message: "cart update sucessfully",
-      sucess: true 
-    })
-    
-  }
-  if(quantity > stock){
-     return res.status(400).json({
-        message :`only ${stock} is left  in stock`,
-     sucess: false
-    })
-  }
 
-  cart.items.push({
-    product:productId,
-    variant: variantId,
-    quantity,
-    price: product.price 
-  })
+    const stock = await stockOfVariant(productId, variantId)
 
-  await cart.save()
+    const cart = (await cartModel.findOne({ user: req.user._id })) ||
+        (await cartModel.create({ user: req.user._id }))
 
-   return res.status(200).json({
-    message: "product add in cart sucessfully ",
-    sucess: true 
-  })
-}
+    const isProductAlreadyInCart = cart.items.some(item => item.product.toString() === productId && item.variant?.toString() === variantId)
 
+    if (isProductAlreadyInCart) {
+        const quantityInCart = cart.items.find(item => item.product.toString() === productId && item.variant?.toString() === variantId).quantity
+        if (quantityInCart + quantity > stock) {
+            return res.status(400).json({
+                message: `Only ${stock} items left in stock. and you already have ${quantityInCart} items in your cart`,
+                success: false
+            })
+        }
 
-export async function removeFromCart(req, res) {
-  try {
-    const { productId, variantId } = req.params;
-
-    // 1. User authentication check
-    if (!req.user || !req.user._id) {
-      throw new Error("User not authenticated");
-    }
-
-    // 2. Find user cart
-    const cart = await cartModel.findOne({
-      user: new mongoose.Types.ObjectId(req.user._id),
-    });
-
-    if (!cart) {
-      return res.status(404).json({
-        message: "User cart is not available...",
-        success: false,
-      });
-    }
-
-    // 3. Check if product+variant exists in cart
-    const isProductAlreadyInCart = cart.items.some(
-      (item) =>
-        item.product.toString() === productId &&
-        item.variant?.toString() === variantId
-    );
-
-    if (!isProductAlreadyInCart) {
-      return res.status(400).json({
-        message: "Product not found in cart",
-        success: false,
-      });
-    }
-
-    // 4. Remove item properly (filter out the matching one)
-    cart.items = cart.items.filter(
-      (item) =>
-        !(
-          item.product.toString() === productId &&
-          item.variant?.toString() === variantId
+        await cartModel.findOneAndUpdate(
+            { user: req.user._id, "items.product": productId, "items.variant": variantId },
+            { $inc: { "items.$.quantity": quantity } },
+            { new: true }
         )
-    );
 
-    // 5. Save updated cart
-    await cart.save();
+        return res.status(200).json({
+            message: "Cart updated successfully",
+            success: true
+        })
+    }
 
-    // 6. Final response
+    if (quantity > stock) {
+        return res.status(400).json({
+            message: `Only ${stock} items left in stock`,
+            success: false
+        })
+    }
+
+    cart.items.push({
+        product: productId,
+        variant: variantId,
+        quantity,
+        price: product.price
+    })
+
+    await cart.save()
+
     return res.status(200).json({
-      message: "Product removed successfully!",
-      success: true,
-    });
-  } catch (err) {
-    return res.status(500).json({
-      message: err.message,
-      success: false,
-    });
-  }
+        message: "Product added to cart successfully",
+        success: true
+    })
 }
-
-// export async function getCart(req,res){
-//   const user = req.user;
-
-//   const data = await cartModel.find({user : user._id})
-
-//   if(!data){
-//     return res.status(400).json({
-//       message: "data not found "
-//     })
-//   }
-
-//   return res.status(200).json({
-//     message:"user cart fetched sucessfully..!",
-//     data
-//   })
-// }
 
 export const getCart = async (req, res) => {
     const user = req.user
@@ -178,45 +94,33 @@ export const getCart = async (req, res) => {
     })
 }
 
-export async function incrementCartItem(req, res) {
-  try {
-    const { productId, variantId } = req.params;
-    const { quantity = 1 } = req.body; // default increment = 1
+export const incrementCartItemQuantity = async (req, res) => {
+    const { productId, variantId } = req.params
 
-    // 1. User authentication check
-    if (!req.user || !req.user._id) {
-      throw new Error("User not authenticated");
+    const product = await productModel.findOne({
+        _id: productId,
+        "variants._id": variantId
+    })
+
+    if (!product) {
+        return res.status(404).json({
+            message: "Product or variant not found",
+            success: false
+        })
     }
 
-    // 2. Find user cart
-    const cart = await cartModel.findOne({
-      user: new mongoose.Types.ObjectId(req.user._id),
-    });
+    const cart = await cartModel.findOne({ user: req.user._id })
 
     if (!cart) {
-      return res.status(404).json({
-        message: "User cart not found",
-        success: false, 
-      });
+        return res.status(404).json({
+            message: "Cart not found",
+            success: false
+        })
     }
 
-    // 3. Check if product+variant exists in cart
-    const cartItem = cart.items.find(
-      (item) =>
-        item.product.toString() === productId &&
-        item.variant?.toString() === variantId
-    );
+    const stock = await stockOfVariant(productId, variantId)
 
-    if (!cartItem) {
-      return res.status(400).json({
-        message: "Product not found in cart",
-        success: false,
-      });
-    }
-
-    // 4. Stock validation
-    const stock = await stockOfVariant(productId, variantId);
-   const itemQuantityInCart = cart.items.find(item => item.product.toString() === productId && item.variant?.toString() === variantId)?.quantity || 0
+    const itemQuantityInCart = cart.items.find(item => item.product.toString() === productId && item.variant?.toString() === variantId)?.quantity || 0
 
     if (itemQuantityInCart + 1 > stock) {
         return res.status(400).json({
@@ -225,28 +129,16 @@ export async function incrementCartItem(req, res) {
         })
     }
 
-    // 5. Increment quantity using $inc
     await cartModel.findOneAndUpdate(
-      {
-        user: req.user._id,
-        "items.product": productId,
-        "items.variant": variantId,
-      },
-      { $inc: { "items.$.quantity": quantity } },
-      { new: true }
-    );
+        { user: req.user._id, "items.product": productId, "items.variant": variantId },
+        { $inc: { "items.$.quantity": 1 } },
+        { new: true }
+    )
 
-    // 6. Final response
     return res.status(200).json({
-      message: "Cart item quantity incremented successfully",
-      success: true,
-    });
-  } catch (err) {
-    return res.status(500).json({
-      message: err.message,
-      success: false,
-    });
-  }
+        message: "Cart item quantity incremented successfully",
+        success: true
+    })
 }
 
 export const createOrderController = async (req, res) => {
@@ -290,5 +182,52 @@ export const createOrderController = async (req, res) => {
         message: "Order created successfully",
         success: true,
         order
+    })
+}
+
+export const verifyOrderController = async (req, res) => {
+    const {
+        razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature
+    } = req.body
+
+    const payment = await paymentModel.findOne({
+        "razorpay.orderId": razorpay_order_id,
+        status: "pending"
+    })
+
+    if (!payment) {
+        return res.status(400).json({
+            message: "Payment not found",
+            success: false
+        })
+    }
+
+    const isPaymentValid = validatePaymentVerification({
+        order_id: razorpay_order_id,
+        payment_id: razorpay_payment_id,
+    }, razorpay_signature, config.RAZORPAY_KEY_SECRET)
+
+    if (!isPaymentValid) {
+        payment.status = "failed"
+        await payment.save()
+
+        return res.status(400).json({
+            message: "Payment verification failed",
+            success: false
+        })
+    }
+
+    payment.status = "paid"
+
+    payment.razorpay.paymentId = razorpay_payment_id
+    payment.razorpay.signature = razorpay_signature
+
+    await payment.save()
+
+    return res.status(200).json({
+        message: "Payment verified successfully",
+        success: true
     })
 }

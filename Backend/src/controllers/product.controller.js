@@ -3,37 +3,60 @@ import { uploadFile } from "../services/storage.services.js";
 
 
 export async function createProduct(req, res) {
+    try {
+        const { title, description, priceAmount, priceCurrency, stock } = req.body;
+        const seller = req.user;
 
-    const { title, description, priceAmount, priceCurrency } = req.body;
-    const seller = req.user;
+        // 1. Images upload - tumhara same code
+        const images = await Promise.all(req.files.map(async (file) => {
+            return await uploadFile({
+                buffer: file.buffer,
+                fileName: file.originalname
+            })
+        }))
 
-    const images = await Promise.all(req.files.map(async (file) => {
-        return await uploadFile({
-            buffer: file.buffer,
-            fileName: file.originalname
+        // 2. Default Variant banao - YEHI SOLUTION 2 KA LOGIC HAI
+        const defaultVariant = {
+            images: images, // product ki main images ko hi variant ki image bana di
+            price: {
+                amount: Number(priceAmount),
+                currency: priceCurrency || "INR"
+            },
+            stock: Number(stock) || 50, // agar stock nahi diya to 50 default
+            attributes: {
+                size: "M",
+                color: "Default",
+                note: "auto-created"
+            }
+        }
+
+        // 3. Product create with default variant inside
+        const product = await productModel.create({
+            title,
+            description,
+            price: {
+                amount: Number(priceAmount),
+                currency: priceCurrency || "INR"
+            },
+            images,
+            seller: seller._id,
+            variants: [defaultVariant] // <-- YE LINE SAB KUCH FIX KAR DEGI
         })
-    }))
 
+        res.status(201).json({
+            message: "Product created successfully with default variant",
+            success: true,
+            product
+        })
 
-    const product = await productModel.create({
-        title,
-        description,
-        price: {
-            amount: priceAmount,
-            currency: priceCurrency || "INR"
-        },
-        images,
-        seller: seller._id
-    })
-
-
-    res.status(201).json({
-        message: "Product created successfully",
-        success: true,
-        product
-    })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            message: "Server error",
+            success: false
+        })
+    }
 }
-
 export async function getSellerProducts(req, res) {
     const seller = req.user;
 

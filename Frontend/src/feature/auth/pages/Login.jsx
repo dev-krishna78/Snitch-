@@ -46,7 +46,7 @@ const Login = () => {
                 {/* ── LEFT: Editorial Image Panel ── */}
                 <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden" style={{ backgroundColor: '#f5f3f0' }}>
                     <img
-                        src="/snitch_editorial_warm.png"
+                        src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
                         alt="Snitch Fashion Editorial"
                         className="absolute inset-0 w-full h-full object-cover object-top"
                         style={{ filter: 'brightness(0.97)' }}
