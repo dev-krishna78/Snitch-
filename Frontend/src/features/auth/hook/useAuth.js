@@ -1,5 +1,5 @@
 import {  setLoading, setUser } from "../state/auth.slice"
-import { register, login, getMe } from "../services/auth.service.js"
+import { register, login, getMe } from "../service/auth.service.js"
 import { useDispatch } from "react-redux"
 
 

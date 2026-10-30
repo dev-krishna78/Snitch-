@@ -2,7 +2,7 @@ import './App.css'
 import { RouterProvider } from 'react-router'
 import { routes } from './app.routes.jsx'
 import { useSelector } from 'react-redux'
-import { useAuth } from "../feature/auth/hook/useAuth.js"
+import { useAuth } from "../features/auth/hook/useAuth.js"
 import { useEffect } from 'react'
 
 

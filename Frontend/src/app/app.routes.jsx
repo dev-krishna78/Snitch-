@@ -1,15 +1,15 @@
 import { createBrowserRouter } from "react-router";
-import Register from "../feature/auth/pages/Register";
-import Login from "../feature/auth/pages/Login";
-import CreateProduct from "../feature/products/pages/CreateProduct";
-import Dashboard from "../feature/products/pages/Dashboard";
-import Protected from "../feature/auth/components/Protected";
-import Home from "../feature/products/pages/Home";
-import ProductDetail from "../feature/products/pages/ProductDetailed";
-import SellerProductDetails from "../feature/products/pages/SellerProductDetails";
-import Cart from "../feature/cart/pages/Cart";
-import AppLayout from "./Applayout";
-import OrderSuccess from "../feature/cart/pages/OrderSucess";
+import Register from "../features/auth/pages/Register";
+import Login from "../features/auth/pages/Login";
+import CreateProduct from "../features/products/pages/CreateProduct";
+import Dashboard from "../features/products/pages/Dashboard";
+import Protected from "../features/auth/components/Protected";
+import Home from "../features/products/pages/Home";
+import ProductDetail from "../features/products/pages/ProductDetailed";
+import SellerProductDetails from "../features/products/pages/SellerProductDetails";
+import Cart from "../features/cart/pages/Cart";
+import AppLayout from "./AppLayout";
+import OrderSuccess from "../features/cart/pages/OrderSucess";
 
 export const routes = createBrowserRouter([
 
