@@ -11,7 +11,7 @@ export default defineConfig({
     port: 5173,
     proxy:{
       "/api":{   // /api request forward on http://local:3000 by vite server 
-        target: "http://localhost:3000",
+        target: "https://snitch-0lbu.onrender.com/",
         changeOrigin: true,
         Secure: false // used for securety 
       }
