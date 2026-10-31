@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const authApiInstance = axios.create({
-    baseURL: "/api/auth",
+    baseURL: `${import.meta.env.VITE_API_URI}/api/auth`,
     withCredentials: true,
 })
 

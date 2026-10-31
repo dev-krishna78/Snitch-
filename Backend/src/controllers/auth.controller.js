@@ -126,7 +126,7 @@ export const googleCallback = async(req,res)=>{
 
     res.cookie("token", token)
 
-    res.redirect("https://snitch-4fce.vercel.app/")
+    res.redirect(config.FRONTEND_URL)
 }
 
 export const getMe = async (req, res) => {

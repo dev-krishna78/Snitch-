@@ -18,7 +18,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({extended: true}))
 
 app.use(cors({
-    origin: "https://snitch-4fce.vercel.app",
+    origin: config.FRONTEND_URL,
     methods: [ "GET", "POST", "PUT", "DELETE" ],
     credentials: true
 }))

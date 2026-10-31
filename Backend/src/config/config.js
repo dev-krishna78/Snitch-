@@ -28,6 +28,10 @@ if (!process.env.RAZORPAY_KEY_SECRET) {
   throw new Error("RAZORPAY_KEY_SECRET is not defined in the environment variables");
 }
 
+if (!process.env.FRONTEND_URL) {
+  throw new Error("FRONTEND_URL is not defined in the environment variables");
+}
+
 export const config = {
    MONGOOSE_URI: process.env.MONGOOSE_URI,
    JWT_SECRET: process.env.JWT_SECRET,
@@ -36,5 +40,6 @@ export const config = {
    NODE_ENV: process.env.NODE_ENV || "development",
    IMAGEKIT_PRIVATE_KEY : process.env.IMAGEKIT_PRIVATE_KEY,
    RAZORPAY_KEY_ID : process.env.RAZORPAY_KEY_ID,
-   RAZORPAY_KEY_SECRET : process.env.RAZORPAY_KEY_SECRET
+   RAZORPAY_KEY_SECRET : process.env.RAZORPAY_KEY_SECRET,
+   FRONTEND_URL: process.env.FRONTEND_URL
 }
